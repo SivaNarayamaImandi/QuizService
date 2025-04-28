@@ -49,7 +49,7 @@ public class QuizService {
     }
 
     public ResponseEntity<Integer> submitQuiz(Integer id, List<Response> response) {
-        if(quizFeign.getScore(response).getBody() < 0)
+        if(quizFeign.getScore(response).getBody() > 0)
             return quizFeign.getScore(response);
         return quizFeign.getScore(response);
     }
