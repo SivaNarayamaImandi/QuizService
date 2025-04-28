@@ -38,39 +38,19 @@ public class QuizService {
 
 
     public ResponseEntity<List<QuestionWrapper>> getQuiz(Integer id) {
-//        Optional<Quiz> quiz = quizRepo.findById(id);
-        List<QuestionWrapper> questionsForUser = new ArrayList<>();
-//        for (Question question : quiz.get().getQuestions()) {
-//            questionsForUser.add(new QuestionWrapper(question.getId(), question.getQuestion(), question.getOption1(), question.getOption2(), question.getOption3(), question.getOption4()));
-//        }
-//        if (!questionsForUser.isEmpty()) {
-//            try {
-                return new ResponseEntity<List<QuestionWrapper>>(questionsForUser, HttpStatus.OK);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return new ResponseEntity<List<QuestionWrapper>>(questionsForUser, HttpStatus.NOT_FOUND);
+        if (!quizFeign.getQuestions(quizRepo.findById(id).get().getQuestions()).getBody().isEmpty()) {
+            try {
+                return quizFeign.getQuestions(quizRepo.findById(id).get().getQuestions());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return quizFeign.getQuestions(quizRepo.findById(id).get().getQuestions());
     }
 
     public ResponseEntity<Integer> submitQuiz(Integer id, List<Response> response) {
-//        List<Question> quiz = quizRepo.findById(id).get().getQuestions();
-//        int score = 0;
-//        int i = 0;
-//        if(!response.isEmpty())
-//        {
-//            for (Response res : response) {
-//                if (res.getResponse().equals(quiz.get(i).getRightAnswer())) {
-//                    score++;
-//                }
-//                i++;
-//            }
-//            try {
-                return new ResponseEntity<Integer>(0, HttpStatus.OK);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return new ResponseEntity<Integer>(score, HttpStatus.NOT_FOUND);
+        if(quizFeign.getScore(response).getBody() < 0)
+            return quizFeign.getScore(response);
+        return quizFeign.getScore(response);
     }
 }
